@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/speech3.wav-85a8a8b7fd2a89e1a5af1c06f7d13151.sample"
+
+[deps]
+
+source_file="res://audio/speech3.wav"
+dest_files=[ "res://.import/speech3.wav-85a8a8b7fd2a89e1a5af1c06f7d13151.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,16 +1,23 @@
 extends Node
 
+signal trigger_transition(text_array, index)
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+signal check_tile(world_position)
+signal tile_check_result(result, world_position)
+
+signal player_dead()
+
+signal stop_game()
+signal reset_game()
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+signal start_dialogue(text)
 
+signal start_stage_attack()
+signal attack_start()
+signal attack_end()
+signal next_stage_attack()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+signal dialogue_start(dialogue_text_array)
+
+signal game_end()

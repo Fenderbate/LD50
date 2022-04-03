@@ -1,3 +1,157 @@
-[gd_scene format=2]
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://resources/gamespace_tilesset.tres" type="TileSet" id=1]
+[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/game/Game.gd" type="Script" id=3]
+[ext_resource path="res://resources/Font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://scenes/game/DialogueController.gd" type="Script" id=5]
+[ext_resource path="res://audio/speech1.wav" type="AudioStream" id=6]
+[ext_resource path="res://audio/speech2.wav" type="AudioStream" id=7]
+[ext_resource path="res://audio/speech6.wav" type="AudioStream" id=8]
+[ext_resource path="res://audio/speech3.wav" type="AudioStream" id=9]
+[ext_resource path="res://audio/speech4.wav" type="AudioStream" id=10]
+[ext_resource path="res://audio/speech5.wav" type="AudioStream" id=11]
+[ext_resource path="res://sprites/Controls.png" type="Texture" id=12]
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "hide"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 5.5, 6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 6 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
 
 [node name="Game" type="Node2D"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ]
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color( 0.133333, 0.12549, 0.203922, 1 )
+polygon = PoolVector2Array( -363, -342, 337, -339, 337, 323, -363, 324 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.75, 0.75 )
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2( -8, -8 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+cell_tile_origin = 1
+centered_textures = true
+format = 1
+tile_data = PoolIntArray( -1, 2, 0, -65536, 2, 1, -65535, 2, 2, 65535, 2, 65536, 0, 2, 65537, 1, 2, 65538, 131071, 2, 131072, 65536, 2, 131073, 65537, 2, 131074 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+
+[node name="AttackEndTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="UI/Control/VBoxContainer"]
+margin_right = 256.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+mouse_filter = 2
+
+[node name="TextLabel" type="Label" parent="UI/Control/VBoxContainer"]
+margin_top = 34.0
+margin_right = 256.0
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 4 )
+align = 1
+valign = 1
+
+[node name="DialogueController" type="Node" parent="UI"]
+script = ExtResource( 5 )
+game_dialogue_label = NodePath("../Control/VBoxContainer/TextLabel")
+
+[node name="SpeechEffects" type="Node" parent="UI/DialogueController"]
+
+[node name="Speech1" type="AudioStreamPlayer" parent="UI/DialogueController/SpeechEffects"]
+stream = ExtResource( 6 )
+bus = "Sound"
+
+[node name="Speech2" type="AudioStreamPlayer" parent="UI/DialogueController/SpeechEffects"]
+stream = ExtResource( 7 )
+bus = "Sound"
+
+[node name="Speech3" type="AudioStreamPlayer" parent="UI/DialogueController/SpeechEffects"]
+stream = ExtResource( 9 )
+bus = "Sound"
+
+[node name="Speech4" type="AudioStreamPlayer" parent="UI/DialogueController/SpeechEffects"]
+stream = ExtResource( 10 )
+bus = "Sound"
+
+[node name="Speech5" type="AudioStreamPlayer" parent="UI/DialogueController/SpeechEffects"]
+stream = ExtResource( 11 )
+bus = "Sound"
+
+[node name="Speech6" type="AudioStreamPlayer" parent="UI/DialogueController/SpeechEffects"]
+stream = ExtResource( 8 )
+bus = "Sound"
+
+[node name="Controls" type="Sprite" parent="."]
+position = Vector2( 0, 50 )
+texture = ExtResource( 12 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Controls"]
+autoplay = "hide"
+anims/RESET = SubResource( 1 )
+anims/hide = SubResource( 2 )
+
+[connection signal="timeout" from="AttackEndTimer" to="." method="_on_AttackEndTimer_timeout"]
